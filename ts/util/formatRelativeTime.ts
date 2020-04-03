@@ -1,5 +1,7 @@
 import moment from 'moment';
 import { LocalizerType } from '../types/Util';
+// tslint:disable-next-line no-require-imports no-var-requires
+const osLocale = require('os-locale');
 
 // Only applies in the english locales, but it ensures that the format
 //   is what we want.
@@ -42,6 +44,7 @@ export function formatRelativeTime(
   const timestamp = moment(rawTimestamp);
   const now = moment();
   const diff = moment.duration(now.diff(timestamp));
+  moment.locale(osLocale.sync().replace(/_/g, '-'));
 
   if (diff.years() >= 1 || !isYear(timestamp)) {
     return replaceSuffix(timestamp.format(formats.y));
